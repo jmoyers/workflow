@@ -1,0 +1,6 @@
+{
+  "name": "amplify-serverless",
+  "description": "Create a React typescript application using amplify, lambda, graphql, dynamodb, and serverless framework",
+  "version": "0.0.1",
+  "license": "MIT"
+}
