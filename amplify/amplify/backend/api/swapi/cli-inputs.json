@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "swapi",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/Users/jmoyers/dev/workflow/amplify/amplify/backend/api/swapi/schema.graphql",
+    "defaultAuthType": {
+      "mode": "API_KEY",
+      "expirationTime": 7
+    }
+  }
+}

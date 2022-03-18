@@ -1,0 +1,103 @@
+# This input configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY {
+  globalAuthRule: AuthRule = { allow: public }
+} # FOR TESTING ONLY!
+type Person @model {
+  id: ID!
+  name: String
+  height: Int
+  mass: Int
+  hair_color: String
+  skin_color: String
+  eye_color: String
+  birth_year: String
+  gender: String
+  homeworld: Planet @belongsTo
+  films: [Film] @manyToMany(relationName: "PersonFilm")
+  species: [Species] @manyToMany(relationName: "PersonSpecies")
+  vehicles: [Vehicle] @manyToMany(relationName: "PersonVehicle")
+  starships: [Starship] @manyToMany(relationName: "PersonStarship")
+}
+
+type Planet @model {
+  name: String
+  rotation_period: Int
+  orbital_period: Int
+  diameter: Int
+  climate: String
+  gravity: String
+  terrain: String
+  surface_water: Int
+  population: Int
+  residents: [Person] @hasMany
+  species: [Species] @hasMany
+  films: [Film] @manyToMany(relationName: "PlanetFilm")
+  url: String
+}
+
+type Film @model {
+  id: ID!
+  title: String
+  episode_id: Int
+  opening_crawl: String
+  director: String
+  producer: String
+  release_date: String
+  characters: [Person] @manyToMany(relationName: "PersonFilm")
+  planets: [Planet] @manyToMany(relationName: "PlanetFilm")
+  starships: [Starship] @manyToMany(relationName: "FilmStarship")
+  vehicles: [Vehicle] @manyToMany(relationName: "FilmVehicle")
+  species: [Species] @manyToMany(relationName: "FilmSpecies")
+  url: String
+}
+
+type Species @model {
+  name: String
+  classification: String
+  designation: String
+  average_height: Int
+  skin_colors: String
+  hair_colors: String
+  eye_colors: String
+  average_lifespan: Int
+  homeworld: Planet @belongsTo
+  language: String
+  people: [Person] @manyToMany(relationName: "PersonSpecies")
+  films: [Film] @manyToMany(relationName: "FilmSpecies")
+  url: String
+}
+
+type Vehicle @model {
+  name: String
+  model: String
+  manufacturer: String
+  cost_in_credits: Int
+  length: Float
+  max_atmosphering_speed: Int
+  crew: Int
+  passengers: Int
+  cargo_capacity: Int
+  consumables: String
+  vehicle_class: String
+  pilots: [Person] @manyToMany(relationName: "PersonVehicle")
+  films: [Film] @manyToMany(relationName: "FilmVehicle")
+}
+
+type Starship @model {
+  name: String
+  model: String
+  manufacturer: String
+  cost_in_credits: Int
+  length: Float
+  max_atmosphering_speed: Int
+  crew: Int
+  passengers: Int
+  cargo_capacity: Int
+  consumables: String
+  hyperdrive_rating: Float
+  MGLT: Int
+  starship_class: String
+  pilots: [Person] @manyToMany(relationName: "PersonStarship")
+  films: [Film] @manyToMany(relationName: "FilmStarship")
+}
