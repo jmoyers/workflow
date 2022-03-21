@@ -4,6 +4,8 @@ import awsconfig from "./aws-exports";
 
 import * as mutations from "./graphql/mutations";
 
+import uuid from "uuid-by-string";
+
 const entity_map = {
   people: {
     create: mutations.createPerson,
@@ -37,20 +39,61 @@ const entity_map = {
   },
 };
 
+const property_to_type = {
+  people: "person",
+  planets: "planet",
+  films: "film",
+  species: "species",
+  vehicles: "vehicle",
+  starships: "starship",
+};
+
 const entity_join_map = {
   people: {
-    species: mutations.createPersonSpecies,
-    starships: mutations.createPersonStarship,
-    vehicles: mutations.createPersonVehicle,
-    films: mutations.createPersonFilm,
+    species: {
+      create: mutations.createPersonSpecies,
+      update: mutations.updatePersonSpecies,
+      delete: mutations.deletePersonSpecies,
+    },
+    starships: {
+      create: mutations.createPersonStarship,
+      update: mutations.updatePersonStarship,
+      delete: mutations.deletePersonStarship,
+    },
+    vehicles: {
+      create: mutations.createPersonVehicle,
+      update: mutations.updatePersonVehicle,
+      delete: mutations.deletePersonVehicle,
+    },
+    films: {
+      create: mutations.createPersonFilm,
+      update: mutations.updatePersonFilm,
+      delete: mutations.deletePersonFilm,
+    },
   },
   planets: {
-    films: mutations.createPlanetFilm,
+    films: {
+      create: mutations.createPlanetFilm,
+      update: mutations.updatePlanetFilm,
+      delete: mutations.deletePlanetFilm,
+    },
   },
   films: {
-    species: mutations.createFilmSpecies,
-    vehicles: mutations.createFilmVehicle,
-    startships: mutations.createFilmStarship,
+    species: {
+      create: mutations.createFilmSpecies,
+      update: mutations.updateFilmSpecies,
+      delete: mutations.deleteFilmSpecies,
+    },
+    vehicles: {
+      create: mutations.createFilmVehicle,
+      update: mutations.updateFilmVehicle,
+      delete: mutations.deleteFilmVehicle,
+    },
+    starships: {
+      create: mutations.createFilmStarship,
+      update: mutations.updateFilmStarship,
+      delete: mutations.deleteFilmStarship,
+    },
   },
 };
 
@@ -105,4 +148,31 @@ async function createEntities(data) {
   await Promise.allSettled(all);
 }
 
-createEntities(data);
+async function joinEntities(joins) {
+  const all = [];
+
+  for (const type of Object.keys(entity_join_map)) {
+    const entities = joins[type];
+    for (const id of Object.keys(entities)) {
+      for (const join_type of Object.keys(entity_join_map[type])) {
+        const create = entity_join_map[type][join_type].create;
+        const update = entity_join_map[type][join_type].update;
+
+        for (const join_id of entities[id][join_type]) {
+          const input = {
+            id: uuid(id + join_id),
+            [property_to_type[type] + "ID"]: id,
+            [property_to_type[join_type] + "ID"]: join_id,
+          };
+
+          all.push(upsert(create, update, input));
+        }
+      }
+    }
+  }
+
+  await Promise.allSettled(all);
+}
+
+//createEntities(data);
+joinEntities(data.joins);
