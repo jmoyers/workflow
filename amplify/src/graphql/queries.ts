@@ -33,10 +33,9 @@ export const getPerson = /* GraphQL */ `
         films {
           nextToken
         }
-        url
         id
-        createdAt
-        updatedAt
+        created
+        edited
       }
       films {
         items {
@@ -78,8 +77,8 @@ export const getPerson = /* GraphQL */ `
         }
         nextToken
       }
-      createdAt
-      updatedAt
+      created
+      edited
       planetResidentsId
     }
   }
@@ -111,10 +110,9 @@ export const listPeople = /* GraphQL */ `
           terrain
           surface_water
           population
-          url
           id
-          createdAt
-          updatedAt
+          created
+          edited
         }
         films {
           nextToken
@@ -128,8 +126,8 @@ export const listPeople = /* GraphQL */ `
         starships {
           nextToken
         }
-        createdAt
-        updatedAt
+        created
+        edited
         planetResidentsId
       }
       nextToken
@@ -159,8 +157,8 @@ export const getPlanet = /* GraphQL */ `
           eye_color
           birth_year
           gender
-          createdAt
-          updatedAt
+          created
+          edited
           planetResidentsId
         }
         nextToken
@@ -176,10 +174,9 @@ export const getPlanet = /* GraphQL */ `
           eye_colors
           average_lifespan
           language
-          url
           id
-          createdAt
-          updatedAt
+          created
+          edited
           planetSpeciesId
         }
         nextToken
@@ -194,10 +191,9 @@ export const getPlanet = /* GraphQL */ `
         }
         nextToken
       }
-      url
       id
-      createdAt
-      updatedAt
+      created
+      edited
     }
   }
 `;
@@ -227,10 +223,9 @@ export const listPlanets = /* GraphQL */ `
         films {
           nextToken
         }
-        url
         id
-        createdAt
-        updatedAt
+        created
+        edited
       }
       nextToken
     }
@@ -296,9 +291,8 @@ export const getFilm = /* GraphQL */ `
         }
         nextToken
       }
-      url
-      createdAt
-      updatedAt
+      created
+      edited
     }
   }
 `;
@@ -332,9 +326,8 @@ export const listFilms = /* GraphQL */ `
         species {
           nextToken
         }
-        url
-        createdAt
-        updatedAt
+        created
+        edited
       }
       nextToken
     }
@@ -370,10 +363,9 @@ export const getSpecies = /* GraphQL */ `
         films {
           nextToken
         }
-        url
         id
-        createdAt
-        updatedAt
+        created
+        edited
       }
       language
       people {
@@ -396,10 +388,9 @@ export const getSpecies = /* GraphQL */ `
         }
         nextToken
       }
-      url
       id
-      createdAt
-      updatedAt
+      created
+      edited
       planetSpeciesId
     }
   }
@@ -430,10 +421,9 @@ export const listSpecies = /* GraphQL */ `
           terrain
           surface_water
           population
-          url
           id
-          createdAt
-          updatedAt
+          created
+          edited
         }
         language
         people {
@@ -442,10 +432,9 @@ export const listSpecies = /* GraphQL */ `
         films {
           nextToken
         }
-        url
         id
-        createdAt
-        updatedAt
+        created
+        edited
         planetSpeciesId
       }
       nextToken
@@ -487,8 +476,8 @@ export const getVehicle = /* GraphQL */ `
         nextToken
       }
       id
-      createdAt
-      updatedAt
+      created
+      edited
     }
   }
 `;
@@ -518,8 +507,8 @@ export const listVehicles = /* GraphQL */ `
           nextToken
         }
         id
-        createdAt
-        updatedAt
+        created
+        edited
       }
       nextToken
     }
@@ -562,8 +551,8 @@ export const getStarship = /* GraphQL */ `
         nextToken
       }
       id
-      createdAt
-      updatedAt
+      created
+      edited
     }
   }
 `;
@@ -595,8 +584,8 @@ export const listStarships = /* GraphQL */ `
           nextToken
         }
         id
-        createdAt
-        updatedAt
+        created
+        edited
       }
       nextToken
     }
@@ -628,10 +617,9 @@ export const getPersonFilm = /* GraphQL */ `
           terrain
           surface_water
           population
-          url
           id
-          createdAt
-          updatedAt
+          created
+          edited
         }
         films {
           nextToken
@@ -645,8 +633,8 @@ export const getPersonFilm = /* GraphQL */ `
         starships {
           nextToken
         }
-        createdAt
-        updatedAt
+        created
+        edited
         planetResidentsId
       }
       film {
@@ -672,9 +660,8 @@ export const getPersonFilm = /* GraphQL */ `
         species {
           nextToken
         }
-        url
-        createdAt
-        updatedAt
+        created
+        edited
       }
       createdAt
       updatedAt
@@ -702,8 +689,8 @@ export const listPersonFilms = /* GraphQL */ `
           eye_color
           birth_year
           gender
-          createdAt
-          updatedAt
+          created
+          edited
           planetResidentsId
         }
         film {
@@ -714,9 +701,8 @@ export const listPersonFilms = /* GraphQL */ `
           director
           producer
           release_date
-          url
-          createdAt
-          updatedAt
+          created
+          edited
         }
         createdAt
         updatedAt
@@ -751,10 +737,9 @@ export const getPersonSpecies = /* GraphQL */ `
           terrain
           surface_water
           population
-          url
           id
-          createdAt
-          updatedAt
+          created
+          edited
         }
         films {
           nextToken
@@ -768,8 +753,8 @@ export const getPersonSpecies = /* GraphQL */ `
         starships {
           nextToken
         }
-        createdAt
-        updatedAt
+        created
+        edited
         planetResidentsId
       }
       species {
@@ -791,10 +776,9 @@ export const getPersonSpecies = /* GraphQL */ `
           terrain
           surface_water
           population
-          url
           id
-          createdAt
-          updatedAt
+          created
+          edited
         }
         language
         people {
@@ -803,10 +787,9 @@ export const getPersonSpecies = /* GraphQL */ `
         films {
           nextToken
         }
-        url
         id
-        createdAt
-        updatedAt
+        created
+        edited
         planetSpeciesId
       }
       createdAt
@@ -835,8 +818,8 @@ export const listPersonSpecies = /* GraphQL */ `
           eye_color
           birth_year
           gender
-          createdAt
-          updatedAt
+          created
+          edited
           planetResidentsId
         }
         species {
@@ -849,10 +832,9 @@ export const listPersonSpecies = /* GraphQL */ `
           eye_colors
           average_lifespan
           language
-          url
           id
-          createdAt
-          updatedAt
+          created
+          edited
           planetSpeciesId
         }
         createdAt
@@ -888,10 +870,9 @@ export const getPersonVehicle = /* GraphQL */ `
           terrain
           surface_water
           population
-          url
           id
-          createdAt
-          updatedAt
+          created
+          edited
         }
         films {
           nextToken
@@ -905,8 +886,8 @@ export const getPersonVehicle = /* GraphQL */ `
         starships {
           nextToken
         }
-        createdAt
-        updatedAt
+        created
+        edited
         planetResidentsId
       }
       vehicle {
@@ -928,8 +909,8 @@ export const getPersonVehicle = /* GraphQL */ `
           nextToken
         }
         id
-        createdAt
-        updatedAt
+        created
+        edited
       }
       createdAt
       updatedAt
@@ -957,8 +938,8 @@ export const listPersonVehicles = /* GraphQL */ `
           eye_color
           birth_year
           gender
-          createdAt
-          updatedAt
+          created
+          edited
           planetResidentsId
         }
         vehicle {
@@ -974,8 +955,8 @@ export const listPersonVehicles = /* GraphQL */ `
           consumables
           vehicle_class
           id
-          createdAt
-          updatedAt
+          created
+          edited
         }
         createdAt
         updatedAt
@@ -1010,10 +991,9 @@ export const getPersonStarship = /* GraphQL */ `
           terrain
           surface_water
           population
-          url
           id
-          createdAt
-          updatedAt
+          created
+          edited
         }
         films {
           nextToken
@@ -1027,8 +1007,8 @@ export const getPersonStarship = /* GraphQL */ `
         starships {
           nextToken
         }
-        createdAt
-        updatedAt
+        created
+        edited
         planetResidentsId
       }
       starship {
@@ -1052,8 +1032,8 @@ export const getPersonStarship = /* GraphQL */ `
           nextToken
         }
         id
-        createdAt
-        updatedAt
+        created
+        edited
       }
       createdAt
       updatedAt
@@ -1081,8 +1061,8 @@ export const listPersonStarships = /* GraphQL */ `
           eye_color
           birth_year
           gender
-          createdAt
-          updatedAt
+          created
+          edited
           planetResidentsId
         }
         starship {
@@ -1100,8 +1080,8 @@ export const listPersonStarships = /* GraphQL */ `
           MGLT
           starship_class
           id
-          createdAt
-          updatedAt
+          created
+          edited
         }
         createdAt
         updatedAt
@@ -1135,10 +1115,9 @@ export const getPlanetFilm = /* GraphQL */ `
         films {
           nextToken
         }
-        url
         id
-        createdAt
-        updatedAt
+        created
+        edited
       }
       film {
         id
@@ -1163,9 +1142,8 @@ export const getPlanetFilm = /* GraphQL */ `
         species {
           nextToken
         }
-        url
-        createdAt
-        updatedAt
+        created
+        edited
       }
       createdAt
       updatedAt
@@ -1193,10 +1171,9 @@ export const listPlanetFilms = /* GraphQL */ `
           terrain
           surface_water
           population
-          url
           id
-          createdAt
-          updatedAt
+          created
+          edited
         }
         film {
           id
@@ -1206,9 +1183,8 @@ export const listPlanetFilms = /* GraphQL */ `
           director
           producer
           release_date
-          url
-          createdAt
-          updatedAt
+          created
+          edited
         }
         createdAt
         updatedAt
@@ -1246,9 +1222,8 @@ export const getFilmStarship = /* GraphQL */ `
         species {
           nextToken
         }
-        url
-        createdAt
-        updatedAt
+        created
+        edited
       }
       starship {
         name
@@ -1271,8 +1246,8 @@ export const getFilmStarship = /* GraphQL */ `
           nextToken
         }
         id
-        createdAt
-        updatedAt
+        created
+        edited
       }
       createdAt
       updatedAt
@@ -1298,9 +1273,8 @@ export const listFilmStarships = /* GraphQL */ `
           director
           producer
           release_date
-          url
-          createdAt
-          updatedAt
+          created
+          edited
         }
         starship {
           name
@@ -1317,8 +1291,8 @@ export const listFilmStarships = /* GraphQL */ `
           MGLT
           starship_class
           id
-          createdAt
-          updatedAt
+          created
+          edited
         }
         createdAt
         updatedAt
@@ -1356,9 +1330,8 @@ export const getFilmVehicle = /* GraphQL */ `
         species {
           nextToken
         }
-        url
-        createdAt
-        updatedAt
+        created
+        edited
       }
       vehicle {
         name
@@ -1379,8 +1352,8 @@ export const getFilmVehicle = /* GraphQL */ `
           nextToken
         }
         id
-        createdAt
-        updatedAt
+        created
+        edited
       }
       createdAt
       updatedAt
@@ -1406,9 +1379,8 @@ export const listFilmVehicles = /* GraphQL */ `
           director
           producer
           release_date
-          url
-          createdAt
-          updatedAt
+          created
+          edited
         }
         vehicle {
           name
@@ -1423,8 +1395,8 @@ export const listFilmVehicles = /* GraphQL */ `
           consumables
           vehicle_class
           id
-          createdAt
-          updatedAt
+          created
+          edited
         }
         createdAt
         updatedAt
@@ -1462,9 +1434,8 @@ export const getFilmSpecies = /* GraphQL */ `
         species {
           nextToken
         }
-        url
-        createdAt
-        updatedAt
+        created
+        edited
       }
       species {
         name
@@ -1485,10 +1456,9 @@ export const getFilmSpecies = /* GraphQL */ `
           terrain
           surface_water
           population
-          url
           id
-          createdAt
-          updatedAt
+          created
+          edited
         }
         language
         people {
@@ -1497,10 +1467,9 @@ export const getFilmSpecies = /* GraphQL */ `
         films {
           nextToken
         }
-        url
         id
-        createdAt
-        updatedAt
+        created
+        edited
         planetSpeciesId
       }
       createdAt
@@ -1527,9 +1496,8 @@ export const listFilmSpecies = /* GraphQL */ `
           director
           producer
           release_date
-          url
-          createdAt
-          updatedAt
+          created
+          edited
         }
         species {
           name
@@ -1541,10 +1509,9 @@ export const listFilmSpecies = /* GraphQL */ `
           eye_colors
           average_lifespan
           language
-          url
           id
-          createdAt
-          updatedAt
+          created
+          edited
           planetSpeciesId
         }
         createdAt

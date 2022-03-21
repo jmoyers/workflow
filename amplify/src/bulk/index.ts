@@ -3,22 +3,42 @@ import { Converter } from "aws-sdk/clients/dynamodb";
 import * as swapi_data from "../../../data/swapi.json";
 import uuid from "uuid-by-string";
 
-export function prepareForDatabase(data: typeof swapi_data) {
+type initial_data = typeof swapi_data;
+interface swdata extends initial_data {
+  joins?: object;
+}
+
+AWS.config.update({ region: "us-west-1" });
+const ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
+
+export function prepareForDatabase(data: swdata) {
   const ids = {};
   const types = Object.keys(data.root);
   const urls = new Set<string>();
+
+  data.joins = {};
+
   const references = [
     "films",
     "species",
     "vehicles",
     "starships",
     "characters",
+    "people",
     "planets",
+    "homeworld",
+    "pilots",
+    "residents",
   ];
+
+  const delete_for_create = ["created", "edited"];
 
   for (const type of types) {
     for (const entity of data[type]) {
       if (entity.url) urls.add(entity.url as string);
+      for (const key of delete_for_create) {
+        if (entity[key]) delete entity[key];
+      }
     }
   }
 
@@ -26,43 +46,40 @@ export function prepareForDatabase(data: typeof swapi_data) {
     ids[url] = uuid(url);
   }
 
-  function isNumeric(str: string) {
-    return !isNaN(str as unknown as number) && !isNaN(parseFloat(str));
-  }
-
   for (const type of types) {
     for (const entity of data[type]) {
       const url = entity.url;
+      delete entity.url;
       entity.id = ids[url];
 
-      for (const key of Object.keys(entity)) {
-        if (isNumeric(entity[key])) {
-          entity[key] = Number(entity[key]);
+      if ("homeworld" in entity) {
+        if (type === "people") {
+          entity.planetResidentsId = ids[entity.homeworld];
+        } else if (type === "species") {
+          entity.planetSpeciesId = ids[entity.homeworld];
         }
+        delete entity.homeworld;
       }
 
-      for (const type of types) {
-        if (entity[type]) {
-          const references = [];
+      for (const ref of references.filter((name) => name !== "homeworld")) {
+        if (entity[ref]) {
+          const join_ids = [];
 
-          for (const url_reference of entity[type]) {
-            references.push(ids[url_reference]);
+          for (const url of entity[ref]) {
+            join_ids.push(ids[url]);
           }
 
-          entity[type] = references;
-        }
-      }
-    }
-  }
+          if (!data.joins[type]) data.joins[type] = {};
+          if (!data.joins[type][entity.id]) data.joins[type][entity.id] = {};
 
-  // build references from new id hash function
-  for (const type of types) {
-    if (Array.isArray(data[type])) {
-      for (const entity of data[type]) {
-        for (const reference of references) {
-          if (entity[reference]) {
-            entity[reference] = entity[reference].map((id) => ids[id]);
-          }
+          let ref_name = ref;
+
+          if (ref_name === "pilots") ref_name = "people";
+          if (ref_name === "residents") ref_name = "people";
+
+          data.joins[type][entity.id][ref_name] = join_ids;
+
+          delete entity[ref];
         }
       }
     }
@@ -71,55 +88,31 @@ export function prepareForDatabase(data: typeof swapi_data) {
   return data;
 }
 
-// needs to be modified for new structure with @manyToMany annotation etc
-export function bulkWriteToDynamo(data) {
-  throw new Error("Not implemented");
+function chunkedWrite(items, table, count = 25) {
+  let i = 0;
+  const all = [];
 
-  const marshalled_data = [];
+  if (items.length > count) {
+    while (i < items.length) {
+      const end = Math.min(items.length, i + count);
 
-  for (const type of Object.keys(data.root)) {
-    marshalled_data[type] = [];
-
-    for (const entity of data[type]) {
-      marshalled_data[type].push(Converter.marshall(entity));
-    }
-  }
-
-  async function main() {
-    AWS.config.update({ region: "us-west-1" });
-
-    const ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
-
-    const PutItems = marshalled_data["people"].map((person) => {
-      return {
-        PutRequest: {
-          Item: {
-            ...person,
-          },
+      const params = {
+        RequestItems: {
+          [table]: [...items.slice(i, end)],
         },
       };
-    });
 
-    let i = 0;
+      i += count;
 
-    if (PutItems.length > 25) {
-      while (i < PutItems.length) {
-        const end = Math.min(PutItems.length, i + 25);
-
-        const params = {
-          RequestItems: {
-            "Person-qs4akq4ewbbozoyxgzfqnujph4-dev": [
-              ...PutItems.slice(i, end),
-            ],
-          },
-        };
-
-        i += 25;
-
-        ddb.batchWriteItem(params, function (err, data) {
-          console.log(err, data);
-        });
-      }
+      all.push(ddb.batchWriteItem(params).promise());
     }
   }
+
+  return Promise.allSettled(all);
+}
+
+// needs to be modified for new structure with @manyToMany annotation etc
+export function bulkWriteToDynamo(raw_items, table) {
+  const marshalled_data = raw_items.map((item) => Converter.marshall(item));
+  return chunkedWrite(marshalled_data, table, 25);
 }
